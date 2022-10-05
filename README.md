@@ -47,6 +47,25 @@ You can then execute your native executable with: `./target/quarkus-to-upper-1.0
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
 
+## Deploying to OpenShift as a Serverless Application
+
+To deploy the service to OpenShift as a Serverless application you should first login to OpenShift using the cli:
+
+```
+oc login ...
+oc project <project_name>
+```
+
+Then run a Maven install, the `quarkus-openshift` plugin will build the image and create a knative service: 
+```
+mvn clean install -Dquarkus.container-image.group=<project_name>
+```
+
+Optionally, you can adjust the paramemeters of the knative service, for example:
+```
+kn service update quarkus-to-upper --concurrency-limit 1 --scale-window 10s
+```
+
 ## Related Guides
 
 - RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
